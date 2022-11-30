@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+
+module Kudos
+  module <%= @user_model_name.capitalize %>s
+    class Achievement < ApplicationRecord
+      self.table_name = :kudos_<%= @user_model_name %>s_achievements
+
+      belongs_to :<%= @user_model_name %>, class_name: '::<%= @user_model_name.capitalize %>'
+      belongs_to :kudos_achievement, class_name: 'Kudos::Achievement'
+
+      scope :unread, -> { where(notified: false) }
+    end
+  end
+end

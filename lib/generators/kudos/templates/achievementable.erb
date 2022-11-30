@@ -1,0 +1,33 @@
+# frozen_string_literal: true
+
+module Kudos
+  module Achievementable
+    extend ActiveSupport::Concern
+
+    included do
+      has_many :kudos_<%= @user_model_name %>s_achievements,
+               class_name: 'Kudos::<%= @user_model_name.capitalize %>s::Achievement',
+               dependent: :destroy
+
+      has_many :kudos_achievements, through: :kudos_<%= @user_model_name %>s_achievements
+    end
+
+    def award(achievement:)
+      object = kudos_<%= @user_model_name %>s_achievements.find_or_initialize_by(kudos_achievement_id: achievement.id)
+      return if object.rank.to_i > achievement.rank.to_i
+
+      object.update!(
+        {
+          rank: achievement.rank,
+          points: object.points.to_i + achievement.points,
+          title: achievement.title,
+          description: achievement.description
+        }.compact
+      )
+    end
+
+    def awarded?(achievement:)
+      kudos_<%= @user_model_name %>s_achievements.find_by({ kudos_achievement_id: achievement.id, rank: achievement.rank }.compact)
+    end
+  end
+end
