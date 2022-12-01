@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kudos (0.1.0)
+    kudos (0.1.1)
       rails (> 6.0.0)
 
 GEM
