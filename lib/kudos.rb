@@ -2,6 +2,7 @@
 
 require 'kudos/version'
 require 'kudos/engine'
+require 'kudos/configuration'
 
 module Kudos
   def self.included(base)
@@ -11,6 +12,21 @@ module Kudos
   end
 
   module ClassMethods
+    # Public: Configure kudos.
+    #
+    #   Kudos.configure do |config|
+    #     config.achievements_model_name = ::Achievement
+    #   end
+    #
+    def configure
+      yield configuration
+    end
+
+    # Public: Returns Kudos::Configuration instance.
+    def configuration
+      @configuration ||= Configuration.new
+    end
+
     def awards
       @awards ||= {}
     end
@@ -20,7 +36,7 @@ module Kudos
     end
 
     def award(award_name, *attributes)
-      achievements = Kudos::Achievement.where(award_name: award_name).order(rank: :asc)
+      achievements = configuration.achievements_model_name.where(award_name: award_name).order(rank: :asc)
       awards[award_name].call(achievements, *attributes)
     end
   end
