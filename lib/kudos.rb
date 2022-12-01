@@ -36,8 +36,8 @@ module Kudos
     end
 
     def award(award_name, *attributes)
-      achievements = configuration.achievements_model_name.where(award_name: award_name).order(rank: :asc)
-      awards[award_name].call(achievements, *attributes)
+      achievements = Kudos::Achievement.where(award_name: award_name.to_s).order(rank: :asc)
+      configuration.achievements_model_name.awards[award_name].call(achievements, *attributes)
     end
   end
 end
