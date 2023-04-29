@@ -23,7 +23,7 @@ class CreateKudosTables < ActiveRecord::Migration<%= migration_version %>
     end
 
     create_table :kudos_<%= @user_model_name %>s_achievements do |t|
-      t.references :<%= @user_model_name %>, null: false, foreign_key: true
+      t.bigint :<%= @user_model_name %>_id, null: false
       t.references :kudos_achievement, null: false, foreign_key: true
       t.boolean :notified, null: false, default: false
       t.integer :rank
@@ -32,6 +32,7 @@ class CreateKudosTables < ActiveRecord::Migration<%= migration_version %>
       t.jsonb :description, null: false, default: {}
       t.timestamps
     end
+
     add_index :kudos_users_achievements, [:<%= @user_model_name %>_id, :kudos_achievement_id], unique: true, name: 'kudos_users_achievements_unique_index'
   end
 
