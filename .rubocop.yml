@@ -69,3 +69,6 @@ RSpec/FactoryBot/ConsistentParenthesesStyle:
 
 RSpec/PredicateMatcher:
   Enabled: false
+
+RSpec/IndexedLet:
+  Enabled: false
